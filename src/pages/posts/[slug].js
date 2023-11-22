@@ -72,7 +72,7 @@ export default function Post({ post, related }) {
   //       arr = [],
   //       temp_index = 0;
   //     contentWrapper.childNodes.forEach((el, el_index) => {
-  //       if (el.innerHTML != undefined) {
+  //       if (el[removed] != undefined) {
   //         temp_index++;
   //         if (temp_index % 5 == 0) {
   //           arr.push(el_index);
@@ -120,45 +120,23 @@ export default function Post({ post, related }) {
 
   return (
     <Layout>
-      <Helmet {...helmetSettings} />
+      <Helmet>
 
-      <ArticleJsonLd post={post} siteTitle={siteMetadata.title} />
+      <ArticleJsonLd post={post} siteTitle={siteMetadata.title}>
 
       <div className={styles.postContainer}>
         <Container>
-          <h1
-            className={styles.title}
-            dangerouslySetInnerHTML={{
-              __html: title,
-            }}
-          />
+          <h1 className={styles.title} dangerouslySetInnerHTML={{>
           {featuredImage && (
-            <FeaturedImage
-              {...featuredImage}
-              src={featuredImage.sourceUrl}
-              dangerouslySetInnerHTML={featuredImage.caption}
-            />
+            <FeaturedImage src={featuredImage.sourceUrl} dangerouslySetInnerHTML={featuredImage.caption}>
           )}
-          <Metadata
-            className={styles.postMetadata}
-            date={date}
-            author={author}
-            categories={categories}
-            options={metadataOptions}
-            isSticky={isSticky}
-          />
+          <Metadata className={styles.postMetadata} date={date} author={author} categories={categories} options={metadataOptions} isSticky={isSticky}>
         </Container>
 
         <Content>
           <Section>
             <Container>
-              <div
-                id="content-wp"
-                className={styles.content}
-                dangerouslySetInnerHTML={{
-                  __html: content,
-                }}
-              />
+              <div id="content-wp" className={styles.content} dangerouslySetInnerHTML={{>
             </Container>
           </Section>
         </Content>
@@ -171,9 +149,9 @@ export default function Post({ post, related }) {
                 {relatedPostsTitle.name ? (
                   <span>
                     More from{' '}
-                    <Link legacyBehavior href={relatedPostsTitle.link}>
+                    &lt;Link legacyBehavior href={relatedPostsTitle.link}&gt;
                       <a>{relatedPostsTitle.name}</a>
-                    </Link>
+                    &lt;/Link&gt;
                   </span>
                 ) : (
                   <span>More Posts</span>
@@ -181,9 +159,9 @@ export default function Post({ post, related }) {
                 <ul>
                   {relatedPostsList.map((post) => (
                     <li key={post.title}>
-                      <Link legacyBehavior href={postPathBySlug(post.slug)}>
+                      &lt;Link legacyBehavior href={postPathBySlug(post.slug)}&gt;
                         <a>{post.title}</a>
-                      </Link>
+                      &lt;/Link&gt;
                     </li>
                   ))}
                 </ul>
@@ -191,7 +169,7 @@ export default function Post({ post, related }) {
             )}
           </Container>
         </Section>
-        <div id="adsEndWrapper" />
+        <div id="adsEndWrapper">
       </div>
     </Layout>
   );
@@ -200,7 +178,8 @@ export default function Post({ post, related }) {
 export async function getServerSideProps(context) {
   let props = {};
   const referral = context?.req?.headers?.referer;
-  if (referral?.includes('facebook.com')) {
+  // if (referral?.includes('facebook.com')) {
+  if (referral != null && referral.trim() != '') {
     // On the server, we'll use an HTTP response to
     // redirect with the status code of our choice.
     // 307 is for temporary redirects.
@@ -282,8 +261,8 @@ export async function getServerSideProps(context) {
 //         res.end()
 //     } else {
 //         // We'll redirect to the external page using
-//         // `window.location`.
-//         window.location = targetURL
+//         // `[removed]`.
+//         [removed] = targetURL
 //         // While the page is loading, code execution will
 //         // continue, so we'll await a never-resolving
 //         // promise to make sure our page never
